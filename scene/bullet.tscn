@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://b4jv0m5781kkm"]
+
+[ext_resource type="Script" path="res://script/bullet.gd" id="1_ctdf6"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_rn1l1"]
+size = Vector3(0.1, 0.1, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3erak"]
+albedo_color = Color(1, 1, 0.223529, 1)
+emission_enabled = true
+emission = Color(0.547973, 0.547972, 7.70092e-07, 1)
+emission_energy_multiplier = 16.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7ac1c"]
+size = Vector3(0.2, 0.2, 0.2)
+
+[node name="bullet" type="Area3D"]
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_ctdf6")
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="."]
+mesh = SubResource("BoxMesh_rn1l1")
+material = SubResource("StandardMaterial3D_3erak")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_7ac1c")

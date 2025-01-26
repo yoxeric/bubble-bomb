@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://cgs385rldgqdd"]
+
+[ext_resource type="Script" path="res://script/blower.gd" id="1_stbui"]
+[ext_resource type="PackedScene" uid="uid://5tvutreb4h6m" path="res://assets/blower.blend" id="2_pvlhn"]
+
+[node name="blower" type="Node3D"]
+script = ExtResource("1_stbui")
+
+[node name="blower" parent="." instance=ExtResource("2_pvlhn")]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.5
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
