@@ -6,8 +6,7 @@
 size = Vector3(0.1, 0.1, 0.1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3erak"]
-albedo_color = Color(1, 1, 0.223529, 1)
-emission_enabled = true
+albedo_color = Color(0.279115, 0.279115, 0.279115, 1)
 emission = Color(0.547973, 0.547972, 7.70092e-07, 1)
 emission_energy_multiplier = 16.0
 

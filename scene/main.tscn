@@ -1,8 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://bm3ah674pflbh"]
+[gd_scene load_steps=13 format=3 uid="uid://bm3ah674pflbh"]
 
 [ext_resource type="Script" path="res://script/main.gd" id="1_0kd22"]
+[ext_resource type="Script" path="res://script/plyr.gd" id="2_vim56"]
 [ext_resource type="PackedScene" uid="uid://c5e2mkm1phf35" path="res://assets/gun.blend" id="3_ut63f"]
-[ext_resource type="PackedScene" uid="uid://cgs385rldgqdd" path="res://scene/blower.tscn" id="4_wa6pl"]
+[ext_resource type="PackedScene" uid="uid://cj4lsgm75ti6d" path="res://scene/ui.tscn" id="4_xuwhp"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_chljv"]
 sky_top_color = Color(0.853032, 0.530156, 0.692468, 1)
@@ -22,14 +23,16 @@ tonemap_mode = 2
 size = Vector2(300, 300)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_i7ey7"]
-size = Vector2(200, 200)
+size = Vector2(400, 200)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ttrke"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_wcjsd"]
+[sub_resource type="SphereShape3D" id="SphereShape3D_snayp"]
+radius = 0.2
 
-[sub_resource type="BoxMesh" id="BoxMesh_bcsco"]
-size = Vector3(0.5, 0.5, 3)
+[sub_resource type="SphereMesh" id="SphereMesh_ocx6k"]
+radius = 0.25
+height = 0.5
 
 [node name="main" type="Node3D"]
 script = ExtResource("1_0kd22")
@@ -40,10 +43,6 @@ environment = SubResource("Environment_25f4m")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.222553, -0.844306, 0.48746, 2.78059e-08, 0.5, 0.866025, -0.974921, 0.192736, -0.111276, 0, 0, 0)
 shadow_enabled = true
-
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.984808, 0.173648, 0, -0.173648, 0.984808, 0, 10, 30)
-fov = 45.0
 
 [node name="bg" type="CSGMesh3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 50, -100)
@@ -58,51 +57,43 @@ use_collision = true
 mesh = SubResource("PlaneMesh_i7ey7")
 material = SubResource("StandardMaterial3D_ttrke")
 
+[node name="zone1" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
+visible = false
+size = Vector3(15, 1, 10)
+
+[node name="zone2" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 5, 0)
+visible = false
+size = Vector3(15, 1, 10)
+
 [node name="Timer" type="Timer" parent="."]
+wait_time = 0.2
 autostart = true
 
 [node name="plyr" type="CharacterBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8, 25)
-visible = false
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 10, 50)
+script = ExtResource("2_vim56")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="plyr"]
-shape = SubResource("BoxShape3D_wcjsd")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
+shape = SubResource("SphereShape3D_snayp")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="plyr"]
-mesh = SubResource("BoxMesh_bcsco")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
+visible = false
+mesh = SubResource("SphereMesh_ocx6k")
 
-[node name="gun" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6, 20)
-layers = 0
+[node name="gun" type="Node3D" parent="plyr"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, -5.2)
 
-[node name="gun2" parent="gun" instance=ExtResource("3_ut63f")]
+[node name="gun2" parent="plyr/gun" instance=ExtResource("3_ut63f")]
 transform = Transform3D(-1.31134e-08, 0, -0.3, 0, 0.3, 0, 0.3, 0, -1.31134e-08, 0, 0, 0)
 
-[node name="blower2" parent="." instance=ExtResource("4_wa6pl")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.1204, 9.88158, 0)
+[node name="Camera3D" type="Camera3D" parent="plyr"]
+transform = Transform3D(1, 0, 0, 0, 0.984808, 0.173648, 0, -0.173648, 0.984808, 0, 2, 7)
+fov = 45.0
 
-[node name="blower" parent="." instance=ExtResource("4_wa6pl")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.8388, 10, 0)
-
-[node name="UI" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="ColorRect" type="ColorRect" parent="UI"]
-visible = false
-layout_mode = 0
-offset_right = 142.0
-offset_bottom = 73.0
-color = Color(0.113725, 0.160784, 0.27451, 0.313726)
-
-[node name="score" type="Label" parent="UI"]
-layout_mode = 1
-offset_right = 116.0
-offset_bottom = 85.0
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 50
-text = "1"
+[node name="UI" parent="." instance=ExtResource("4_xuwhp")]
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

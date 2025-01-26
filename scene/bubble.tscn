@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://diyvsixhr76ei"]
+[gd_scene load_steps=8 format=3 uid="uid://diyvsixhr76ei"]
 
 [ext_resource type="Script" path="res://script/bubble.gd" id="1_1nes4"]
 [ext_resource type="PackedScene" uid="uid://brsoe12l60irp" path="res://assets/bub.blend" id="2_mcjqt"]
@@ -7,6 +7,29 @@
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_7r54j"]
 radius = 1.0
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_8nwro"]
+direction = Vector3(1, 1, 1)
+spread = 180.0
+initial_velocity_min = 1.0
+initial_velocity_max = 10.0
+angular_velocity_min = -5.00002
+angular_velocity_max = 4.99998
+orbit_velocity_min = 9.49949e-08
+orbit_velocity_max = 0.1
+gravity = Vector3(0, -1, 0)
+turbulence_enabled = true
+turbulence_noise_strength = 0.28
+turbulence_noise_scale = 0.765
+turbulence_noise_speed_random = 0.11
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mrxka"]
+albedo_color = Color(0.113725, 0.568627, 1, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_nxhcf"]
+material = SubResource("StandardMaterial3D_mrxka")
+radius = 0.1
+height = 0.2
 
 [node name="bubble" type="RigidBody3D"]
 collision_layer = 2
@@ -29,6 +52,25 @@ priority = 1
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 shape = SubResource("SphereShape3D_7r54j")
+
+[node name="pop" type="GPUParticles3D" parent="."]
+emitting = false
+amount = 4
+lifetime = 0.5
+one_shot = true
+explosiveness = 0.7
+process_material = SubResource("ParticleProcessMaterial_8nwro")
+draw_pass_1 = SubResource("SphereMesh_nxhcf")
+
+[node name="pap" type="GPUParticles3D" parent="."]
+emitting = false
+amount = 2
+lifetime = 0.5
+one_shot = true
+explosiveness = 0.7
+randomness = 0.7
+process_material = SubResource("ParticleProcessMaterial_8nwro")
+draw_pass_1 = SubResource("SphereMesh_nxhcf")
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
